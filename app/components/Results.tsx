@@ -2,6 +2,7 @@
 
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import Markdown from "react-markdown";
 import { analyzeDecision, QuestionItem } from "../actions";
 
 interface ResultsProps {
@@ -310,7 +311,9 @@ export function Results({
                 <h3 className="text-lg font-semibold text-white">Why This Recommendation?</h3>
               </div>
 
-              <p className="leading-relaxed text-white/70">{data.reasoning}</p>
+              <div className="prose prose-invert prose-sm max-w-none prose-p:text-white/70 prose-strong:text-white prose-ul:text-white/70 prose-li:text-white/70 prose-li:marker:text-violet-400">
+                <Markdown>{data.reasoning}</Markdown>
+              </div>
             </div>
           </div>
         </RevealOnMount>

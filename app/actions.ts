@@ -44,10 +44,14 @@ const questionsSchema = z.object({
 const analysisSchema = z.object({
   recommendation: z
     .string()
-    .describe("A clear recommendation based on the answers"),
+    .describe(
+      "A short, punchy recommendation (max 8 words) - be direct and actionable"
+    ),
   reasoning: z
     .string()
-    .describe("Detailed explanation of why this recommendation was made"),
+    .describe(
+      "Markdown-formatted explanation with bullet points, bold text for key insights, and clear structure"
+    ),
   confidence: z
     .number()
     .describe(
@@ -103,8 +107,12 @@ They answered the following questions by swiping right (yes) or left (no):
 ${qaList}
 
 Based on their answers, provide:
-1. A clear, actionable recommendation
-2. Detailed reasoning that references their specific answers
+1. A **short, punchy recommendation** (max 8 words) - be direct like "Go for it!" or "Wait and reassess" or "Yes, with caution"
+2. A **markdown-formatted reasoning** that:
+   - Uses **bold** for key insights
+   - Uses bullet points to organize thoughts
+   - References specific answers they gave
+   - Keeps it concise but insightful (3-5 bullet points max)
 3. A confidence score (0-100) based on how consistent and clear their answers are
 
 Be supportive and insightful. Help them feel confident in their decision.`,

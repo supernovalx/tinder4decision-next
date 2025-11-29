@@ -2,9 +2,10 @@
 
 import { useState, useRef, useMemo } from "react";
 import TinderCard from "react-tinder-card";
+import { QuestionItem } from "../actions";
 
 interface CardSwiperProps {
-  questions: string[];
+  questions: QuestionItem[];
   onComplete: (answers: boolean[]) => void;
 }
 
@@ -87,7 +88,7 @@ export function CardSwiper({ questions, onComplete }: CardSwiperProps) {
 
         {/* Card Stack */}
         <div className="relative h-[400px] w-full">
-          {questions.map((question, index) => (
+          {questions.map((questionItem, index) => (
             <TinderCard
               ref={(el) => {
                 childRefs[index].current = el;
@@ -99,9 +100,16 @@ export function CardSwiper({ questions, onComplete }: CardSwiperProps) {
               preventSwipe={["up", "down"]}
               className="absolute inset-0"
             >
-              <div className="flex h-full w-full cursor-grab select-none items-center justify-center rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-8 shadow-2xl backdrop-blur-xl active:cursor-grabbing">
-                <p className="text-center text-2xl font-medium leading-relaxed text-white">
-                  {question}
+              <div 
+                className="flex h-full w-full cursor-grab select-none flex-col items-center justify-center rounded-3xl border border-white/20 p-8 shadow-2xl active:cursor-grabbing"
+                style={{ background: questionItem.background }}
+              >
+                <span className="mb-4 text-5xl">{questionItem.emoji}</span>
+                <p 
+                  className="text-center text-2xl font-medium leading-relaxed"
+                  style={{ color: questionItem.foreground }}
+                >
+                  {questionItem.question}
                 </p>
               </div>
             </TinderCard>

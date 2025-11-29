@@ -2,11 +2,11 @@
 
 import { useMutation } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { analyzeDecision } from "../actions";
+import { analyzeDecision, QuestionItem } from "../actions";
 
 interface ResultsProps {
   prompt: string;
-  questions: string[];
+  questions: QuestionItem[];
   answers: boolean[];
   onRestart: () => void;
 }
@@ -239,7 +239,8 @@ export function Results({
                 >
                   {answers[i] ? "Yes" : "No"}
                 </span>
-                <span className="text-white/60">{q}</span>
+                <span className="mr-1">{q.emoji}</span>
+                <span className="text-white/60">{q.question}</span>
               </div>
             ))}
           </div>

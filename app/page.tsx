@@ -2,15 +2,15 @@
 
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-import { generateQuestions } from "./actions";
+import { generateQuestions, QuestionItem } from "./actions";
 import { CardSwiper } from "./components/CardSwiper";
 import { Results } from "./components/Results";
 import { StartScreen } from "./components/StartScreen";
 
 type AppState =
   | { phase: "start" }
-  | { phase: "swipe"; prompt: string; questions: string[] }
-  | { phase: "results"; prompt: string; questions: string[]; answers: boolean[] };
+  | { phase: "swipe"; prompt: string; questions: QuestionItem[] }
+  | { phase: "results"; prompt: string; questions: QuestionItem[]; answers: boolean[] };
 
 export default function Home() {
   const [state, setState] = useState<AppState>({ phase: "start" });

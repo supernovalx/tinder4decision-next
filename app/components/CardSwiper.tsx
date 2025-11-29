@@ -75,7 +75,9 @@ export function CardSwiper({ questions, onComplete }: CardSwiperProps) {
         {/* Progress */}
         <div className="space-y-2">
           <div className="flex justify-between text-sm text-white/60">
-            <span>Question {progress + 1} of {questions.length}</span>
+            <span>
+              Question {progress + 1} of {questions.length}
+            </span>
             <span>{Math.round(progressPercent)}% complete</span>
           </div>
           <div className="h-2 overflow-hidden rounded-full bg-white/10">
@@ -85,7 +87,6 @@ export function CardSwiper({ questions, onComplete }: CardSwiperProps) {
             />
           </div>
         </div>
-
         {/* Card Stack */}
         <div className="relative h-[400px] w-full">
           {questions.map((questionItem, index) => (
@@ -100,12 +101,12 @@ export function CardSwiper({ questions, onComplete }: CardSwiperProps) {
               preventSwipe={["up", "down"]}
               className="absolute inset-0"
             >
-              <div 
+              <div
                 className="flex h-full w-full cursor-grab select-none flex-col items-center justify-center rounded-3xl border border-white/20 p-8 shadow-2xl active:cursor-grabbing"
                 style={{ background: questionItem.background }}
               >
                 <span className="mb-4 text-5xl">{questionItem.emoji}</span>
-                <p 
+                <p
                   className="text-center text-2xl font-medium leading-relaxed"
                   style={{ color: questionItem.foreground }}
                 >
@@ -125,7 +126,6 @@ export function CardSwiper({ questions, onComplete }: CardSwiperProps) {
             </div>
           )}
         </div>
-
         {/* Swipe Indicators */}
         <div className="flex items-center justify-center gap-4">
           <button
@@ -172,13 +172,11 @@ export function CardSwiper({ questions, onComplete }: CardSwiperProps) {
             </svg>
           </button>
         </div>
-
-        {/* Direction Labels */}
+        {/* Direction Labels
         <div className="flex justify-between px-4 text-sm">
           <span className="text-rose-400">← No</span>
           <span className="text-emerald-400">Yes →</span>
-        </div>
-
+        </div> */}
         {/* Last swipe feedback */}
         {lastDirection && (
           <div className="text-center">
@@ -197,4 +195,3 @@ export function CardSwiper({ questions, onComplete }: CardSwiperProps) {
     </div>
   );
 }
-

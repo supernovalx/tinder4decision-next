@@ -71,7 +71,7 @@ export function StartScreen({ onStart, isLoading }: StartScreenProps) {
                 </>
               ) : (
                 <>
-                  <span>Generate Questions</span>
+                  <span>Let&apos;s Decide</span>
                   <svg
                     className="h-5 w-5 transition-transform group-hover:translate-x-1"
                     fill="none"
@@ -126,11 +126,7 @@ export function StartScreen({ onStart, isLoading }: StartScreenProps) {
 
 function LoadingSpinner() {
   return (
-    <svg
-      className="h-5 w-5 animate-spin"
-      fill="none"
-      viewBox="0 0 24 24"
-    >
+    <svg className="h-5 w-5 animate-spin" fill="none" viewBox="0 0 24 24">
       <circle
         className="opacity-25"
         cx="12"
@@ -147,4 +143,3 @@ function LoadingSpinner() {
     </svg>
   );
 }
-

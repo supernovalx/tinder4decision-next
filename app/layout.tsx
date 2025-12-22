@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Tinder for Decisions",
+  title: "Decidr",
   description: "Swipe your way to better decisions",
 };
 

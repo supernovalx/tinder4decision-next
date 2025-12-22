@@ -10,14 +10,20 @@ import { StartScreen } from "./components/StartScreen";
 type AppState =
   | { phase: "start" }
   | { phase: "swipe"; prompt: string; questions: QuestionItem[] }
-  | { phase: "results"; prompt: string; questions: QuestionItem[]; answers: boolean[] };
+  | {
+      phase: "results";
+      prompt: string;
+      questions: QuestionItem[];
+      answers: boolean[];
+    };
 
 export default function Home() {
   const [state, setState] = useState<AppState>({ phase: "start" });
 
   const { mutate: startDecision, isPending } = useMutation({
-    mutationFn: generateQuestions,
-    onSuccess: (data, prompt) => {
+    mutationFn: ({ prompt, count }: { prompt: string; count: number }) =>
+      generateQuestions(prompt, count),
+    onSuccess: (data, { prompt }) => {
       setState({
         phase: "swipe",
         prompt,
@@ -26,8 +32,8 @@ export default function Home() {
     },
   });
 
-  const handleStart = (prompt: string) => {
-    startDecision(prompt);
+  const handleStart = (prompt: string, questionCount: number) => {
+    startDecision({ prompt, count: questionCount });
   };
 
   const handleSwipeComplete = (answers: boolean[]) => {

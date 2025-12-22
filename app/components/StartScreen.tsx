@@ -3,18 +3,42 @@
 import { useState } from "react";
 
 interface StartScreenProps {
-  onStart: (prompt: string) => void;
+  onStart: (prompt: string, questionCount: number) => void;
   isLoading: boolean;
 }
 
+const PRESET_COUNTS = [5, 10, 15] as const;
+
 export function StartScreen({ onStart, isLoading }: StartScreenProps) {
   const [prompt, setPrompt] = useState("");
+  const [questionCount, setQuestionCount] = useState<number>(10);
+  const [customCount, setCustomCount] = useState<string>("");
+  const [isCustom, setIsCustom] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (prompt.trim() && !isLoading) {
-      onStart(prompt.trim());
+      const count = isCustom ? parseInt(customCount, 10) || 10 : questionCount;
+      onStart(prompt.trim(), Math.max(1, Math.min(30, count)));
     }
+  };
+
+  const handlePresetClick = (count: number) => {
+    setQuestionCount(count);
+    setIsCustom(false);
+    setCustomCount("");
+  };
+
+  const handleCustomClick = () => {
+    setIsCustom(true);
+    if (!customCount) {
+      setCustomCount(questionCount.toString());
+    }
+  };
+
+  const handleCustomChange = (value: string) => {
+    const numericValue = value.replace(/\D/g, "");
+    setCustomCount(numericValue);
   };
 
   return (
@@ -55,6 +79,56 @@ export function StartScreen({ onStart, isLoading }: StartScreenProps) {
             />
             <p className="text-xs text-white/40">
               Include any relevant context to get more personalized questions.
+            </p>
+          </div>
+
+          {/* Question Count Selector */}
+          <div className="space-y-3">
+            <label className="block text-sm font-medium text-white/80">
+              Number of questions
+            </label>
+            <div className="flex flex-wrap items-center gap-2">
+              {PRESET_COUNTS.map((count) => (
+                <button
+                  key={count}
+                  type="button"
+                  onClick={() => handlePresetClick(count)}
+                  disabled={isLoading}
+                  className={`rounded-xl px-4 py-2 text-sm font-medium transition-all ${
+                    !isCustom && questionCount === count
+                      ? "bg-gradient-to-r from-rose-500 to-orange-500 text-white shadow-lg shadow-rose-500/25"
+                      : "border border-white/10 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10"
+                  } disabled:opacity-50`}
+                >
+                  {count}
+                </button>
+              ))}
+              <button
+                type="button"
+                onClick={handleCustomClick}
+                disabled={isLoading}
+                className={`rounded-xl px-4 py-2 text-sm font-medium transition-all ${
+                  isCustom
+                    ? "bg-gradient-to-r from-violet-500 to-purple-500 text-white shadow-lg shadow-violet-500/25"
+                    : "border border-white/10 bg-white/5 text-white/70 hover:border-white/20 hover:bg-white/10"
+                } disabled:opacity-50`}
+              >
+                Custom
+              </button>
+              {isCustom && (
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  value={customCount}
+                  onChange={(e) => handleCustomChange(e.target.value)}
+                  placeholder="1-30"
+                  className="w-20 rounded-xl border border-white/20 bg-white/10 px-3 py-2 text-center text-sm text-white placeholder-white/40 focus:border-violet-400 focus:outline-none focus:ring-2 focus:ring-violet-400/20"
+                  disabled={isLoading}
+                />
+              )}
+            </div>
+            <p className="text-xs text-white/40">
+              More questions = deeper analysis. Max 30 questions.
             </p>
           </div>
 
@@ -106,7 +180,11 @@ export function StartScreen({ onStart, isLoading }: StartScreenProps) {
                 2
               </div>
               <p>
-                Swipe through 10 yes/no questions —{" "}
+                Swipe through{" "}
+                <span className="text-violet-400 font-medium">
+                  {isCustom ? parseInt(customCount, 10) || 10 : questionCount}
+                </span>{" "}
+                yes/no questions —{" "}
                 <span className="text-emerald-400">right for yes</span>,{" "}
                 <span className="text-rose-400">left for no</span>
               </p>

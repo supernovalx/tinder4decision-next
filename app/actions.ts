@@ -33,13 +33,14 @@ const questionItemSchema = z.object({
 
 export type QuestionItem = z.infer<typeof questionItemSchema>;
 
-const questionsSchema = z.object({
-  questions: z
-    .array(questionItemSchema)
-    .describe(
-      "Exactly 10 yes/no questions with styling to help analyze the decision"
-    ),
-});
+const createQuestionsSchema = (count: number) =>
+  z.object({
+    questions: z
+      .array(questionItemSchema)
+      .describe(
+        `Exactly ${count} yes/no questions with styling to help analyze the decision`
+      ),
+  });
 
 const analysisSchema = z.object({
   recommendation: z
@@ -59,15 +60,15 @@ const analysisSchema = z.object({
     ),
 });
 
-export async function generateQuestions(prompt: string) {
+export async function generateQuestions(prompt: string, count: number = 10) {
   const { object } = await generateObject({
     model,
-    schema: questionsSchema,
+    schema: createQuestionsSchema(count),
     prompt: `You are a decision-making assistant. The user needs help making a decision about:
 
 "${prompt}"
 
-Generate exactly 10 thoughtful yes/no questions that will help analyze this decision from different angles. For each question, also provide:
+Generate exactly ${count} thoughtful yes/no questions that will help analyze this decision from different angles. For each question, also provide:
 - A visually appealing CSS background (use gradients like 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' or solid colors)
 - A foreground text color that contrasts well with the background for readability
 - A single emoji that captures the theme or mood of the question

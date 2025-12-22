@@ -2,7 +2,37 @@
 
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { generateObject } from "ai";
+import { cookies } from "next/headers";
 import { z } from "zod";
+
+const INVITE_COOKIE_NAME = "decidr_invite_code";
+
+export async function verifyInviteCode(
+  code: string
+): Promise<{ success: boolean; error?: string }> {
+  const inviteCode = process.env.INVITE_CODE;
+
+  if (!inviteCode) {
+    // No invite code configured, allow access
+    return { success: true };
+  }
+
+  if (code !== inviteCode) {
+    return { success: false, error: "Invalid invite code" };
+  }
+
+  // Set cookie that expires in 1 year
+  const cookieStore = await cookies();
+  cookieStore.set(INVITE_COOKIE_NAME, code, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    maxAge: 60 * 60 * 24 * 365, // 1 year
+    path: "/",
+  });
+
+  return { success: true };
+}
 
 const openrouter = createOpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY,

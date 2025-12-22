@@ -8,7 +8,8 @@ const openrouter = createOpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY,
 });
 
-const model = openrouter("anthropic/claude-sonnet-4.5");
+// const model = openrouter("anthropic/claude-sonnet-4.5");
+const model = openrouter("google/gemini-3-flash-preview");
 
 const questionItemSchema = z.object({
   question: z
